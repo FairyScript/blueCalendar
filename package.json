@@ -13,10 +13,12 @@
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "dayjs": "^1.11.8",
     "framer-motion": "^10.12.17",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.13.0"
+    "react-router-dom": "^6.13.0",
+    "valtio": "^1.10.6"
   },
   "devDependencies": {
     "@swc/plugin-emotion": "^2.5.68",
