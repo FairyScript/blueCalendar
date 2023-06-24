@@ -89,7 +89,9 @@ interface RaidItemProps {
 }
 
 const RaidOpen: React.FC<RaidItemProps> = ({ now }) => {
-  const closeStr = now.add(1, 'hour').startOf('hour').local().format('mm:ss')
+  const closeTime = now.add(1, 'hour').startOf('hour')
+  const duration = dayjs.duration(closeTime.diff(now))
+  const closeStr = duration.format('HH:mm:ss')
   return (
     <Flex direction="column" align="center">
       <Text>正在进行中,结束时间:</Text>
@@ -102,9 +104,7 @@ const RaidOpen: React.FC<RaidItemProps> = ({ now }) => {
 
 const RaidClose: React.FC<RaidItemProps> = ({ now }) => {
   const next = getNextRaid(now, 1)[0].local()
-
   const duration = dayjs.duration(next.diff(now))
-
   const openStr = duration.format('HH:mm:ss')
 
   return (
