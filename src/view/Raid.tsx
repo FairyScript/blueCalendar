@@ -33,7 +33,7 @@ const table = [
   [14, 18, 22],
   [8, 12, 16, 20],
 ]
-const dayCount = [5, 4, 3, 3, 3, 3, 4]
+const dayCount = table.map(h => h.length)
 const flatTable = table.flat()
 
 function getNextRaid(current: Dayjs, count: number) {
@@ -45,7 +45,8 @@ function getNextRaid(current: Dayjs, count: number) {
 
   //find now in table
   const preDayCount = dayCount.slice(0, day).reduce((a, b) => a + b, 0)
-  const index = preDayCount + table[day].findIndex(h => h > hour)
+  const hourIndex = table[day].findIndex(h => h > hour)
+  const index = preDayCount + (hourIndex !== -1 ? hourIndex : dayCount[day])
   const nextHours = getCircularValues(flatTable, index, count)
 
   let next = now
