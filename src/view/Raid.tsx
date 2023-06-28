@@ -68,18 +68,16 @@ const Raid: React.FC = () => {
   const open = isOpen(now)
 
   return (
-    <div>
-      <Card padding={5}>
-        <Center mb={5}>
-          <Heading size="md">Raid</Heading>
-        </Center>
-        <Divider />
-        <Box mt={5}>
-          {open ? <RaidOpen now={now} /> : <RaidClose now={now} />}
-        </Box>
-        <FutureRaid now={now} />
-      </Card>
-    </div>
+    <Card padding={5}>
+      <Center mb={5}>
+        <Heading size="md">Raid</Heading>
+      </Center>
+      <Divider />
+      <Box mt={5}>
+        {open ? <RaidOpen now={now} /> : <RaidClose now={now} />}
+      </Box>
+      <FutureRaid now={now} />
+    </Card>
   )
 }
 

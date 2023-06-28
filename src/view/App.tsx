@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import Raid from './Raid'
 import { Card, Center, Container, Flex, Heading } from '@chakra-ui/react'
+import DayTime from './DayTime'
 
 const App: React.FC = () => {
   useTimer()
@@ -15,6 +16,7 @@ const App: React.FC = () => {
           </Heading>
         </Center>
         <Now />
+        <DayTime />
         <Raid />
       </Flex>
     </Container>
