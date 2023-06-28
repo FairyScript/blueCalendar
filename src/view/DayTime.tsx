@@ -22,7 +22,7 @@ const DayTime: React.FC = () => {
   const dayMinutes = minutes % DAY
   const isDay = dayMinutes < HALF_DAY
   const nextDayTime = dayTime
-    .add(Math.ceil(minutes / DAY) * DAY, 'minute')
+    .add(Math.ceil(minutes / HALF_DAY) * HALF_DAY, 'minute')
     .local()
     .format('HH:mm:ss')
   return (
