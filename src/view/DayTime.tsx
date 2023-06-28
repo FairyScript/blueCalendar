@@ -6,6 +6,7 @@ import {
   Box,
   CircularProgress,
   CircularProgressLabel,
+  Text,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 
@@ -20,6 +21,10 @@ const DayTime: React.FC = () => {
   const minutes = duration.asMinutes()
   const dayMinutes = minutes % DAY
   const isDay = dayMinutes < HALF_DAY
+  const nextDayTime = dayTime
+    .add(Math.ceil(minutes / DAY) * DAY, 'minute')
+    .local()
+    .format('HH:mm:ss')
   return (
     <Card padding={5}>
       <Center mb={5}>
@@ -30,7 +35,10 @@ const DayTime: React.FC = () => {
       </Center>
       <Divider />
       <Box mt={5}>
-        <Center>
+        <Center flexDirection="column">
+          <Text fontSize={20} as="b" mb={5}>
+            {isDay ? '入夜' : '日出'}时间: {nextDayTime}
+          </Text>
           <CircularProgress
             value={((dayMinutes % HALF_DAY) / HALF_DAY) * 100}
             size="120px"
