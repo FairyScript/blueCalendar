@@ -1,12 +1,14 @@
 {
-  "name": "react-boilerplate",
+  "name": "blue-calendar",
   "version": "1.0.1",
-  "description": "A boilerplate for React projects.",
+  "description": "Blue Protocol Calendar",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build"
   },
-  "keywords": [],
+  "keywords": [
+    "Blue Protocol"
+  ],
   "author": "fairyscript",
   "license": "MIT",
   "dependencies": {
@@ -27,6 +29,7 @@
     "@vitejs/plugin-react-swc": "^3.3.2",
     "typescript": "^5.1.3",
     "vite": "^4.3.9",
+    "vite-plugin-version-mark": "^0.0.8",
     "vite-tsconfig-paths": "^4.2.0"
   }
 }
