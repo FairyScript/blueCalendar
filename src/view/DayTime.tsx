@@ -15,7 +15,7 @@ const DAY = 50
 const HALF_DAY = 25
 
 //无法确认是否维护后会重置,可能有数秒的误差
-const dayTime = dayjs('Wed, 28 Jun 2023 15:12:07 GMT')
+const dayTime = dayjs('Wed, 29 Jun 2023 11:52:10 GMT')
 const DayTime: React.FC = () => {
   const duration = dayjs.duration(dayjs().diff(dayTime))
   const minutes = duration.asMinutes()
