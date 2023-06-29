@@ -1,3 +1,4 @@
+import { useStore } from '@/store/rootStore'
 import {
   Card,
   Center,
@@ -17,27 +18,32 @@ const HALF_DAY = 25
 //无法确认是否维护后会重置,可能有数秒的误差
 const dayTime = dayjs('Wed, 29 Jun 2023 11:52:10 GMT')
 const DayTime: React.FC = () => {
-  const duration = dayjs.duration(dayjs().diff(dayTime))
+  const store = useStore()
+  const now = dayjs(store.current)
+  const duration = dayjs.duration(now.diff(dayTime))
   const minutes = duration.asMinutes()
   const dayMinutes = minutes % DAY
   const isDay = dayMinutes < HALF_DAY
-  const nextDayTime = dayTime
-    .add(Math.ceil(minutes / HALF_DAY) * HALF_DAY, 'minute')
-    .local()
-    .format('HH:mm:ss')
+  const nextDayTime = dayTime.add(
+    Math.ceil(minutes / HALF_DAY) * HALF_DAY,
+    'minute'
+  )
+  const timeToNext = now.to(nextDayTime)
+  const nextDayStr = nextDayTime.format('HH:mm:ss')
+
   return (
     <Card padding={5}>
       <Center mb={5}>
         <Heading size="md">
-          现在是: {isDay ? '白天' : '夜晚'} 距离{isDay ? '夜晚' : '白天'}还有:
-          {(HALF_DAY - (dayMinutes % HALF_DAY)).toFixed(0)}分钟
+          现在是: {dayStr(isDay)} 距离{dayStr(!isDay)}还有:
+          {timeToNext}
         </Heading>
       </Center>
       <Divider />
       <Box mt={5}>
         <Center flexDirection="column">
           <Text fontSize={20} as="b" mb={5}>
-            {isDay ? '入夜' : '日出'}时间: {nextDayTime}
+            {isDay ? '入夜' : '日出'}时间: {nextDayStr}
           </Text>
           <CircularProgress
             value={((dayMinutes % HALF_DAY) / HALF_DAY) * 100}
@@ -53,3 +59,7 @@ const DayTime: React.FC = () => {
 }
 
 export default DayTime
+
+function dayStr(isDay: boolean) {
+  return isDay ? '白天' : '夜晚'
+}
