@@ -1,4 +1,4 @@
-import { useStore } from '@/store/rootStore'
+import { useStore, useStoreRef } from '@/store/rootStore'
 import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import Raid from './Raid'
@@ -26,7 +26,7 @@ const App: React.FC = () => {
 export default App
 
 function useTimer() {
-  const store = useStore()
+  const store = useStoreRef()
 
   useEffect(() => {
     const timer = setInterval(() => {

@@ -17,6 +17,10 @@ export const StoreProvider: React.FC<{
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
 }
 
+export function useStoreRef() {
+  return useContext(StoreContext)
+}
+
 export function useStore() {
-  return useProxy(useContext(StoreContext))
+  return useProxy(useStoreRef())
 }
