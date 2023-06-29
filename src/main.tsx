@@ -14,6 +14,8 @@ import timezone from 'dayjs/plugin/timezone'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import theme from './view/theme'
+import cnLocale from 'dayjs/locale/zh-cn'
+dayjs.locale(cnLocale)
 dayjs.extend(isBetween)
 dayjs.extend(utc)
 dayjs.extend(timezone)
