@@ -16,7 +16,7 @@ const App: React.FC = () => {
           </Heading>
         </Center>
         <Now />
-        <DayTime />
+        {/* <DayTime /> */}
         <Raid />
       </Flex>
     </Container>
