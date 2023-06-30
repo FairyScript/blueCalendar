@@ -21,17 +21,15 @@ const DayTime: React.FC = () => {
   const store = useStore()
   const now = dayjs(store.current)
   const dayTime = getDayStart(now)
-  const duration = dayjs.duration(now.diff(dayTime))
-  const minutes = duration.asMinutes()
-  const dayMinutes = minutes % DAY
-  const isDay = dayMinutes < HALF_DAY
+  const minutes = dayjs.duration(now.diff(dayTime)).asMinutes()
+  const isDay = minutes % DAY < HALF_DAY
   const nextDayTime = dayTime.add(
     Math.ceil(minutes / HALF_DAY) * HALF_DAY,
     'minute'
   )
   const timeToNext = now.to(nextDayTime)
   const nextDayStr = nextDayTime.format('HH:mm:ss')
-
+  const dayPercent = ((minutes % HALF_DAY) / HALF_DAY) * 100
   return (
     <Card padding={5}>
       <Center mb={5}>
@@ -47,7 +45,7 @@ const DayTime: React.FC = () => {
             {isDay ? '入夜' : '日出'}时间: {nextDayStr}
           </Text>
           <CircularProgress
-            value={((dayMinutes % HALF_DAY) / HALF_DAY) * 100}
+            value={dayPercent}
             size="120px"
             color={isDay ? 'green.400' : 'blue.400'}
           >
