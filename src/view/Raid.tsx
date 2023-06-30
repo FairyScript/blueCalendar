@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import type { Dayjs } from 'dayjs'
+import { memo } from 'react'
 
 /**
  *  月曜日 ～ 金曜日	
@@ -55,7 +56,7 @@ const Raid: React.FC = () => {
   )
 }
 
-export default Raid
+export default memo(Raid)
 
 interface RaidItemProps {
   now: Dayjs

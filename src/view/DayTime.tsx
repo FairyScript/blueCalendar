@@ -10,6 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
+import { memo } from 'react'
 
 //1昼夜 50min 25min 昼 25min 夜
 const DAY = 50
@@ -57,7 +58,7 @@ const DayTime: React.FC = () => {
   )
 }
 
-export default DayTime
+export default memo(DayTime)
 
 function dayStr(isDay: boolean) {
   return isDay ? '白天' : '夜晚'
