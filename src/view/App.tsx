@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Raid from './Raid'
 import { Card, Center, Container, Flex, Heading } from '@chakra-ui/react'
 import DayTime from './DayTime'
+import Footer from './Footer'
 
 const App: React.FC = () => {
   useTimer()
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         <Now />
         <DayTime />
         <Raid />
+        <Footer />
       </Flex>
     </Container>
   )
