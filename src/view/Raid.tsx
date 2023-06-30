@@ -36,32 +36,6 @@ const table = [
 const dayCount = table.map(h => h.length)
 const flatTable = table.flat()
 
-function getNextRaid(current: Dayjs, count: number) {
-  const now = dayjs(current).tz('Asia/Tokyo')
-  const day = now.day()
-  const hour = now.hour()
-
-  const result: Dayjs[] = []
-
-  //find now in table
-  const preDayCount = dayCount.slice(0, day).reduce((a, b) => a + b, 0)
-  const hourIndex = table[day].findIndex(h => h > hour)
-  const index = preDayCount + (hourIndex !== -1 ? hourIndex : dayCount[day])
-  const nextHours = getCircularValues(flatTable, index, count)
-
-  let next = now
-  for (const hour of nextHours) {
-    next = getNextTime(next, hour)
-    result.push(next)
-  }
-
-  return result
-}
-
-function isOpen(current: Dayjs) {
-  return table[current.day()].includes(current.hour())
-}
-
 const Raid: React.FC = () => {
   const { current } = useStore()
   const now = dayjs(current).tz('Asia/Tokyo')
@@ -126,6 +100,32 @@ const FutureRaid: React.FC<RaidItemProps> = ({ now }) => {
       ))}
     </div>
   )
+}
+
+function getNextRaid(current: Dayjs, count: number) {
+  const now = dayjs(current).tz('Asia/Tokyo')
+  const day = now.day()
+  const hour = now.hour()
+
+  const result: Dayjs[] = []
+
+  //find now in table
+  const preDayCount = dayCount.slice(0, day).reduce((a, b) => a + b, 0)
+  const hourIndex = table[day].findIndex(h => h > hour)
+  const index = preDayCount + (hourIndex !== -1 ? hourIndex : dayCount[day])
+  const nextHours = getCircularValues(flatTable, index, count)
+
+  let next = now
+  for (const hour of nextHours) {
+    next = getNextTime(next, hour)
+    result.push(next)
+  }
+
+  return result
+}
+
+function isOpen(current: Dayjs) {
+  return table[current.day()].includes(current.hour())
 }
 
 function getCircularValues<T = any>(

@@ -16,10 +16,11 @@ const DAY = 50
 const HALF_DAY = 25
 
 //无法确认是否维护后会重置,可能有数秒的误差
-const dayTime = dayjs('Wed, 29 Jun 2023 11:52:10 GMT')
+// const dayTime = dayjs('Wed, 29 Jun 2023 11:52:10 GMT')
 const DayTime: React.FC = () => {
   const store = useStore()
   const now = dayjs(store.current)
+  const dayTime = getDayStart(now)
   const duration = dayjs.duration(now.diff(dayTime))
   const minutes = duration.asMinutes()
   const dayMinutes = minutes % DAY
@@ -62,4 +63,10 @@ export default DayTime
 
 function dayStr(isDay: boolean) {
   return isDay ? '白天' : '夜晚'
+}
+
+function getDayStart(now: dayjs.Dayjs) {
+  const newDay = now.tz('Asia/Tokyo').startOf('h').hour(5).minute(2).second(10)
+  const isnewDay = now.isAfter(newDay)
+  return isnewDay ? newDay : newDay.subtract(1, 'day')
 }
