@@ -16,8 +16,6 @@ import { memo } from 'react'
 const DAY = 50
 const HALF_DAY = 25
 
-//无法确认是否维护后会重置,可能有数秒的误差
-// const dayTime = dayjs('Wed, 29 Jun 2023 11:52:10 GMT')
 const DayTime: React.FC = () => {
   const store = useStore()
   const now = dayjs(store.current)
@@ -65,7 +63,9 @@ function dayStr(isDay: boolean) {
 }
 
 function getDayStart(now: dayjs.Dayjs) {
+  //无法确认是否维护后会重置,可能有数秒的误差
   const newDay = now.tz('Asia/Tokyo').startOf('h').hour(5).minute(2).second(10)
+  //TODO 在东京时间5:20-9:45之间,发生了跳变.暂时无法确认具体时间点
   const isnewDay = now.isAfter(newDay)
   return isnewDay ? newDay : newDay.subtract(1, 'day')
 }
