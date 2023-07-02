@@ -22,10 +22,9 @@ const DayTime: React.FC = () => {
   const dayTime = getDayStart(now)
   const minutes = dayjs.duration(now.diff(dayTime)).asMinutes()
   const isDay = minutes % DAY < HALF_DAY
-  const nextDayTime = dayTime.add(
-    Math.ceil(minutes / HALF_DAY) * HALF_DAY,
-    'minute'
-  )
+  const nextDayTime = dayTime
+    .add(Math.ceil(minutes / HALF_DAY) * HALF_DAY, 'minute')
+    .local()
   const timeToNext = now.to(nextDayTime)
   const nextDayStr = nextDayTime.format('HH:mm:ss')
   const dayPercent = ((minutes % HALF_DAY) / HALF_DAY) * 100
