@@ -2,7 +2,6 @@ import { useStore } from '@/store/rootStore'
 import {
   Card,
   Center,
-  Heading,
   Divider,
   Box,
   CircularProgress,
@@ -11,6 +10,7 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { memo } from 'react'
+import CardHeader from './components/CardHeader'
 
 //1昼夜 50min 25min 昼 25min 夜
 const DAY = 50
@@ -25,20 +25,19 @@ const DayTime: React.FC = () => {
   const nextDayTime = dayTime
     .add(Math.ceil(minutes / HALF_DAY) * HALF_DAY, 'minute')
     .local()
-  const timeToNext = now.to(nextDayTime)
+  const minutesToNext = (HALF_DAY - (minutes % HALF_DAY)).toFixed(0)
   const nextDayStr = nextDayTime.format('HH:mm:ss')
   const dayPercent = ((minutes % HALF_DAY) / HALF_DAY) * 100
   return (
     <Card padding={5}>
-      <Center mb={5}>
-        <Heading size="md">
-          现在是: {dayStr(isDay)} 距离{dayStr(!isDay)}还有:
-          {timeToNext}
-        </Heading>
-      </Center>
+      <CardHeader title="时钟" notifiKey="dayTime" />
       <Divider />
       <Box mt={5}>
         <Center flexDirection="column">
+          <Text>
+            现在是: {dayStr(isDay)}, 距离{dayStr(!isDay)}还有:{minutesToNext}
+            分钟
+          </Text>
           <Text fontSize={20} as="b" mb={5}>
             {isDay ? '入夜' : '日出'}时间: {nextDayStr}
           </Text>

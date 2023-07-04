@@ -1,17 +1,10 @@
 import { useStore } from '@/store/rootStore'
 import { getNextRaid, raidIsOpen } from '@/utils/raidTime'
-import {
-  Box,
-  Card,
-  Center,
-  Divider,
-  Flex,
-  Heading,
-  Text,
-} from '@chakra-ui/react'
+import { Box, Card, Divider, Flex, Text } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import type { Dayjs } from 'dayjs'
 import { memo } from 'react'
+import CardHeader from './components/CardHeader'
 
 const Raid: React.FC = () => {
   const { current } = useStore()
@@ -20,9 +13,8 @@ const Raid: React.FC = () => {
 
   return (
     <Card padding={5}>
-      <Center mb={5}>
-        <Heading size="md">Raid</Heading>
-      </Center>
+      <CardHeader title="团本" notifiKey="raid" />
+
       <Divider />
       <Box mt={5}>
         {open ? <RaidOpen now={now} /> : <RaidClose now={now} />}

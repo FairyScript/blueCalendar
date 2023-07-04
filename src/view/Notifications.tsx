@@ -1,5 +1,5 @@
-import { IStore, useStore } from '@/store/rootStore'
-import { SettingsIcon } from '@chakra-ui/icons'
+import { useStore } from '@/store/rootStore'
+import { BellIcon, SettingsIcon } from '@chakra-ui/icons'
 import {
   Popover,
   PopoverArrow,
@@ -64,3 +64,23 @@ export const NotifiController: React.FC = memo(() => {
     </Popover>
   )
 })
+
+export type NotificationSwitchKey = 'dayTime' | 'raid'
+
+export const NotificationSwitch: React.FC<{
+  notifiKey: NotificationSwitchKey
+}> = ({ notifiKey }) => {
+  const store = useStore()
+  const clock = store.clock
+  return (
+    <Flex alignItems="center" gap={2}>
+      <BellIcon />
+      <Switch
+        isChecked={clock[notifiKey]}
+        onChange={e => {
+          store.clock[notifiKey] = e.target.checked
+        }}
+      />
+    </Flex>
+  )
+}
