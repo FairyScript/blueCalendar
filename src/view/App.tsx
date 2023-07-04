@@ -5,6 +5,7 @@ import Raid from './Raid'
 import { Card, Center, Container, Flex, Heading } from '@chakra-ui/react'
 import DayTime from './DayTime'
 import Footer from './Footer'
+import { NotifiController } from './Notifications'
 
 const App: React.FC = () => {
   useTimer()
@@ -45,8 +46,11 @@ const Now: React.FC = () => {
   const timeStr = dayjs(store.current).format('YYYY-MM-DD HH:mm:ss')
   return (
     <Card>
-      <Center padding={5}>
+      <Center padding={5} alignItems="center">
         <Heading size="md">现在时间是: {timeStr}</Heading>
+        <Flex ml={3}>
+          <NotifiController />
+        </Flex>
       </Center>
     </Card>
   )
