@@ -14,7 +14,6 @@ import CardHeader from './components/CardHeader'
 import { getDayTime } from '@/utils/dayTime'
 
 //1昼夜 50min 25min 昼 25min 夜
-const DAY = 50
 const HALF_DAY = 25
 
 const DayTime: React.FC = () => {
@@ -54,12 +53,4 @@ export default memo(DayTime)
 
 function dayStr(isDay: boolean) {
   return isDay ? '白天' : '夜晚'
-}
-
-function getDayStart(now: dayjs.Dayjs) {
-  //无法确认是否维护后会重置,可能有数秒的误差
-  const newDay = now.tz('Asia/Tokyo').startOf('h').hour(5).minute(2).second(10)
-  //TODO 在东京时间5:20-9:45之间,发生了跳变.暂时无法确认具体时间点
-  const isnewDay = now.isAfter(newDay)
-  return isnewDay ? newDay : newDay.subtract(1, 'day')
 }

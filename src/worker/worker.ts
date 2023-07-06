@@ -1,5 +1,5 @@
-import { getDayTime } from '@/utils/dayTime'
-import { getNextRaid } from '@/utils/raidTime'
+import { getDayTime } from '../utils/dayTime'
+import { getNextRaid } from '../utils/raidTime'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'

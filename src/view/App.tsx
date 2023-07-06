@@ -7,7 +7,6 @@ import DayTime from './DayTime'
 import Footer from './Footer'
 import { NotifiController } from './Notifications'
 import { subscribe } from 'valtio'
-import ClockWorker from '@/worker/worker?worker'
 import { deepCopy } from '@/utils/deepCopy'
 
 const App: React.FC = () => {
@@ -48,7 +47,7 @@ function useTimer() {
 function useWorker() {
   const store = useStoreRef()
   useEffect(() => {
-    const w = new ClockWorker()
+    const w = new Worker(new URL('../worker/worker.ts', import.meta.url))
     const h = subscribe(store.clock, () => {
       w.postMessage(deepCopy(store.clock))
     })
