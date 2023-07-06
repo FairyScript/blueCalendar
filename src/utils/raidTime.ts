@@ -1,5 +1,4 @@
 import type { Dayjs } from 'dayjs'
-import dayjs from 'dayjs'
 /**
  *  月曜日 ～ 金曜日	
  *    1回目　14:00 ～ 15:00
@@ -26,7 +25,7 @@ const dayCount = table.map(h => h.length)
 const flatTable = table.flat()
 
 export function getNextRaid(current: Dayjs, count: number) {
-  const now = dayjs(current).tz('Asia/Tokyo')
+  const now = current.tz('Asia/Tokyo')
   const day = now.day()
   const hour = now.hour()
 

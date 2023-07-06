@@ -11,6 +11,7 @@ import {
 import dayjs from 'dayjs'
 import { memo } from 'react'
 import CardHeader from './components/CardHeader'
+import { getDayTime } from '@/utils/dayTime'
 
 //1昼夜 50min 25min 昼 25min 夜
 const DAY = 50
@@ -19,15 +20,9 @@ const HALF_DAY = 25
 const DayTime: React.FC = () => {
   const store = useStore()
   const now = dayjs(store.current)
-  const dayTime = getDayStart(now)
-  const minutes = dayjs.duration(now.diff(dayTime)).asMinutes()
-  const isDay = minutes % DAY < HALF_DAY
-  const nextDayTime = dayTime
-    .add(Math.ceil(minutes / HALF_DAY) * HALF_DAY, 'minute')
-    .local()
-  const minutesToNext = (HALF_DAY - (minutes % HALF_DAY)).toFixed(0)
+  const { isDay, nextDayTime, minutesToNext } = getDayTime(now)
   const nextDayStr = nextDayTime.format('HH:mm:ss')
-  const dayPercent = ((minutes % HALF_DAY) / HALF_DAY) * 100
+  const dayPercent = (1 - minutesToNext / HALF_DAY) * 100
   return (
     <Card padding={5}>
       <CardHeader title="时钟" notifiKey="dayTime" />
@@ -35,7 +30,8 @@ const DayTime: React.FC = () => {
       <Box mt={5}>
         <Center flexDirection="column">
           <Text>
-            现在是: {dayStr(isDay)}, 距离{dayStr(!isDay)}还有:{minutesToNext}
+            现在是: {dayStr(isDay)}, 距离{dayStr(!isDay)}还有:
+            {minutesToNext.toFixed(0)}
             分钟
           </Text>
           <Text fontSize={20} as="b" mb={5}>
