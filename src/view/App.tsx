@@ -5,9 +5,13 @@ import Raid from './Raid'
 import { Card, Center, Container, Flex, Heading } from '@chakra-ui/react'
 import DayTime from './DayTime'
 import Footer from './Footer'
+import { NotifiController } from './Notifications'
+import { subscribe } from 'valtio'
+import { deepCopy } from '@/utils/deepCopy'
 
 const App: React.FC = () => {
   useTimer()
+  useWorker()
   return (
     <Container>
       <Flex direction="column" gap={5}>
@@ -40,13 +44,33 @@ function useTimer() {
   }, [])
 }
 
+function useWorker() {
+  const store = useStoreRef()
+  useEffect(() => {
+    const w = new Worker(new URL('../worker/worker.ts', import.meta.url))
+    const h = subscribe(store.clock, () => {
+      w.postMessage(deepCopy(store.clock))
+    })
+
+    w.postMessage(deepCopy(store.clock))
+
+    return () => {
+      w.terminate()
+      h()
+    }
+  }, [])
+}
+
 const Now: React.FC = () => {
   const store = useStore()
   const timeStr = dayjs(store.current).format('YYYY-MM-DD HH:mm:ss')
   return (
     <Card>
-      <Center padding={5}>
+      <Center padding={5} alignItems="center">
         <Heading size="md">现在时间是: {timeStr}</Heading>
+        <Flex ml={3}>
+          <NotifiController />
+        </Flex>
       </Center>
     </Card>
   )
