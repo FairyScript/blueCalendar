@@ -6,9 +6,13 @@ import { Card, Center, Container, Flex, Heading } from '@chakra-ui/react'
 import DayTime from './DayTime'
 import Footer from './Footer'
 import { NotifiController } from './Notifications'
+import { subscribe } from 'valtio'
+import ClockWorker from '@/worker/worker?worker'
+import { deepCopy } from '@/utils/deepCopy'
 
 const App: React.FC = () => {
   useTimer()
+  useWorker()
   return (
     <Container>
       <Flex direction="column" gap={5}>
@@ -37,6 +41,23 @@ function useTimer() {
     }, 100)
     return () => {
       clearInterval(timer)
+    }
+  }, [])
+}
+
+function useWorker() {
+  const store = useStoreRef()
+  useEffect(() => {
+    const w = new ClockWorker()
+    const h = subscribe(store.clock, () => {
+      w.postMessage(deepCopy(store.clock))
+    })
+
+    w.postMessage(deepCopy(store.clock))
+
+    return () => {
+      w.terminate()
+      h()
     }
   }, [])
 }

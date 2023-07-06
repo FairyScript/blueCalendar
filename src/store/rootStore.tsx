@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef } from 'react'
 import { proxy, subscribe } from 'valtio'
-import { useProxy } from 'valtio/utils'
+import { devtools, useProxy } from 'valtio/utils'
 
 const initStore = {
   current: Date.now(),
@@ -13,16 +13,14 @@ const initStore = {
 }
 
 function createStore() {
-  let state = Object.assign({}, initStore)
+  const state = Object.assign({}, initStore)
   try {
-    state = Object.assign(
-      state,
-      JSON.parse(localStorage.getItem('store') || '{}')
-    )
+    const storageState = JSON.parse(localStorage.getItem('store') || '{}')
+    Object.assign(state, storageState)
   } catch (error) {
     console.error('store storage parse error', error)
   }
-  const store = proxy(initStore)
+  const store = proxy(state)
 
   return store
 }
@@ -44,13 +42,29 @@ export const StoreProvider: React.FC<{
 //storage middleware
 function useStorage(store: typeof initStore) {
   useEffect(() => {
-    const h = subscribe(store, () => {
+    const h = subscribe(store.clock, () => {
       const storage = {
         clock: store.clock,
       }
       localStorage.setItem('store', JSON.stringify(storage))
     })
     return () => h()
+  }, [store])
+
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      devtools(store, {
+        name: 'store',
+        enabled: true,
+      })
+
+      return () => {
+        devtools(store, {
+          name: 'store',
+          enabled: false,
+        })
+      }
+    }
   }, [store])
 }
 
