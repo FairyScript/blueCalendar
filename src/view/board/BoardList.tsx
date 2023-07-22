@@ -11,6 +11,7 @@ import {
   HStack,
   TagLabel,
   TagCloseButton,
+  useColorMode,
 } from '@chakra-ui/react'
 import { useNavigate, useMatch } from 'react-router-dom'
 import { useBoardData } from './Board'
@@ -101,15 +102,20 @@ const BoardItem: React.FC<IBoardItemProps> = ({ data }) => {
   const match = useMatch(`/board/${data.id}`)
   const isActive = !!match
 
+  const colorMode = useColorMode()
+  const activeColor = colorMode.colorMode === 'dark' ? 'green.700' : 'green.200'
+
   // dont show empty board
   if (data.quest_panel.length === 0) return null
 
   return (
     <ListItem
       h={24}
-      border="1px solid black"
+      borderWidth={1}
+      borderRadius={6}
+      borderColor="gray.400"
       cursor="pointer"
-      bgColor={isActive ? 'green.100' : ''}
+      bgColor={isActive ? activeColor : ''}
       fontWeight={isActive ? 'bold' : ''}
       onClick={onClick}
     >
