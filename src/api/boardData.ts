@@ -3,7 +3,7 @@ import axios from 'axios'
 
 //testData
 function getTestUrl(name: string) {
-  return new URL(`../testData/${name}.json`, import.meta.url).href
+  return `https://cdn.jsdelivr.net/gh/FairyScript/bp-datamine/apiext/${name}.json` //new URL(`../testData/${name}.json`, import.meta.url).href
 }
 
 const boardData = getTestUrl('master_adventure_board')
