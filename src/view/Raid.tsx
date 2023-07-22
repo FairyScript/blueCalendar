@@ -5,10 +5,10 @@ import dayjs from 'dayjs'
 import type { Dayjs } from 'dayjs'
 import { memo } from 'react'
 import CardHeader from './components/CardHeader'
+import { useNow } from '@/utils/useNow'
 
 const Raid: React.FC = () => {
-  const { current } = useStore()
-  const now = dayjs(current).tz('Asia/Tokyo')
+  const now = useNow().tz('Asia/Tokyo')
   const open = raidIsOpen(now)
 
   return (

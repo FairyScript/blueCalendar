@@ -26,3 +26,6 @@ temp
 
 # Local Netlify folder
 .netlify
+
+# testData
+src/testData

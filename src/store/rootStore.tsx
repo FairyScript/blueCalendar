@@ -1,12 +1,11 @@
 import { deepCopy } from '@/utils/deepCopy'
 import { mergeDeep } from '@/utils/mergeDeep'
 import { useConst } from '@chakra-ui/react'
-import { createContext, useContext, useEffect, useRef } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 import { proxy, subscribe } from 'valtio'
 import { devtools, useProxy } from 'valtio/utils'
 
 const initStore = {
-  current: Date.now(),
   clock: {
     enabled: false,
     beforeMin: 3,
@@ -35,7 +34,6 @@ export const StoreProvider: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
   const store = useConst(() => {
-    console.log('createStore')
     return createStore()
   })
 
@@ -48,11 +46,8 @@ export const StoreProvider: React.FC<{
 //storage middleware
 function useStorage(store: typeof initStore) {
   useEffect(() => {
-    const h = subscribe(store.clock, () => {
-      const storage = {
-        clock: store.clock,
-      }
-      localStorage.setItem('store', JSON.stringify(storage))
+    const h = subscribe(store, () => {
+      localStorage.setItem('store', JSON.stringify(store))
     })
     return () => h()
   }, [store])

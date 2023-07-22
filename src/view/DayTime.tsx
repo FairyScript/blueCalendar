@@ -12,13 +12,13 @@ import dayjs from 'dayjs'
 import { memo } from 'react'
 import CardHeader from './components/CardHeader'
 import { getDayTime } from '@/utils/dayTime'
+import { useNow } from '@/utils/useNow'
 
 //1昼夜 50min 25min 昼 25min 夜
 const HALF_DAY = 25
 
 const DayTime: React.FC = () => {
-  const store = useStore()
-  const now = dayjs(store.current)
+  const now = useNow()
   const { isDay, nextDayTime, minutesToNext } = getDayTime(now)
   const nextDayStr = nextDayTime.format('HH:mm:ss')
   const dayPercent = (1 - minutesToNext / HALF_DAY) * 100

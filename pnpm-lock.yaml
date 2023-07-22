@@ -35,6 +35,9 @@ dependencies:
   react-router-dom:
     specifier: ^6.14.2
     version: registry.npmmirror.com/react-router-dom@6.14.2(react-dom@18.2.0)(react@18.2.0)
+  react-use-promise:
+    specifier: ^0.5.0
+    version: registry.npmmirror.com/react-use-promise@0.5.0(react@18.2.0)
   valtio:
     specifier: ^1.11.0
     version: registry.npmmirror.com/valtio@1.11.0(react@18.2.0)
@@ -43,6 +46,9 @@ devDependencies:
   '@swc/plugin-emotion':
     specifier: ^2.5.70
     version: registry.npmmirror.com/@swc/plugin-emotion@2.5.70
+  '@types/loadable__component':
+    specifier: ^5.13.4
+    version: registry.npmmirror.com/@types/loadable__component@5.13.4
   '@types/react':
     specifier: ^18.2.15
     version: registry.npmmirror.com/@types/react@18.2.15
@@ -2042,6 +2048,14 @@ packages:
     version: 2.5.70
     dev: true
 
+  registry.npmmirror.com/@types/loadable__component@5.13.4:
+    resolution: {integrity: sha512-YhoCCxyuvP2XeZNbHbi8Wb9EMaUJuA2VGHxJffcQYrJKIKSkymJrhbzsf9y4zpTmr5pExAAEh5hbF628PAZ8Dg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/loadable__component/-/loadable__component-5.13.4.tgz}
+    name: '@types/loadable__component'
+    version: 5.13.4
+    dependencies:
+      '@types/react': registry.npmmirror.com/@types/react@18.2.15
+    dev: true
+
   registry.npmmirror.com/@types/lodash.mergewith@4.6.7:
     resolution: {integrity: sha512-3m+lkO5CLRRYU0fhGRp7zbsGi6+BZj0uTVSwvcKU+nSlhjA9/QRNfuSGnD2mX6hQA7ZbmcCkzk5h4ZYGOtk14A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/lodash.mergewith/-/lodash.mergewith-4.6.7.tgz}
     name: '@types/lodash.mergewith'
@@ -2792,6 +2806,17 @@ packages:
       invariant: registry.npmmirror.com/invariant@2.2.4
       react: registry.npmmirror.com/react@18.2.0
       tslib: registry.npmmirror.com/tslib@2.6.0
+    dev: false
+
+  registry.npmmirror.com/react-use-promise@0.5.0(react@18.2.0):
+    resolution: {integrity: sha512-kpmnwDsXILLsEe4lxMT2iaJKQq1Wt4KuW2t6YPXwulAWSvnqwPAlj8wrRMQ5d/0+SutKR2qk41yJpeaV49bvUQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/react-use-promise/-/react-use-promise-0.5.0.tgz}
+    id: registry.npmmirror.com/react-use-promise/0.5.0
+    name: react-use-promise
+    version: 0.5.0
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.2 || ^18.0.0
+    dependencies:
+      react: registry.npmmirror.com/react@18.2.0
     dev: false
 
   registry.npmmirror.com/react@18.2.0:
