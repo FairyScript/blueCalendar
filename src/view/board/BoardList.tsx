@@ -80,10 +80,7 @@ const TagSelect: React.FC = () => {
       borderWidth={1}
       padding="0 16px"
     >
-      <Tag size="md" borderRadius="full">
-        <TagLabel>全部</TagLabel>
-        <TagCloseButton />
-      </Tag>
+      <Text mr={4}>筛选条件:</Text>
       {cItems}
       {mTags}
     </HStack>
