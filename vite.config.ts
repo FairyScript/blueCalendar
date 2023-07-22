@@ -14,9 +14,7 @@ export default defineConfig({
       root: '.',
     }),
     vitePluginVersionMark({
-      // name: 'test-app',
-      // version: '0.0.1',
-      // command: 'git describe --tags',
+      name: 'blueCalandar',
       ifGitSHA: true,
       ifShortSHA: true,
       ifMeta: true,
