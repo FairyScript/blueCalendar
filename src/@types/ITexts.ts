@@ -1,0 +1,73 @@
+export interface ITexts {
+  name: TextType
+  texts: ITextItem[]
+}
+
+export interface ITextItem {
+  id: number
+  text: string
+}
+
+export type TextType = (typeof textType)[number]
+const textType = [
+  'Common',
+  'SplashReloadAlert',
+  'YesNoPopup',
+  'achievements_text',
+  'costume_text',
+  'enemyparam_RaceId_text',
+  'enemyparam_text',
+  'item_text',
+  'master_adventure_board_quests_text',
+  'master_adventure_boards_text',
+  'master_aesthe_course_text',
+  'master_attackbase_text',
+  'master_challenge_quest_text',
+  'master_coin_shop_text',
+  'master_craft_recipe_set_text',
+  'master_currency_shop_text',
+  'master_emote_text',
+  'master_gasha_text',
+  'master_guild_rank_reward_text',
+  'master_imagine_text',
+  'master_liquid_memory_boost_ability_text',
+  'master_liquid_memory_text',
+  'master_log_text',
+  'master_login_bonus_text',
+  'master_mail_format_text',
+  'master_merchandise_commodity_text',
+  'master_mission_boost_abilities_text',
+  'master_mount_imagine_text',
+  'master_quest_auto_order_bonus_text',
+  'master_quest_auto_order_daily_text',
+  'master_quest_auto_order_season_text',
+  'master_quest_auto_order_weekly_text',
+  'master_raid_settings_text',
+  'master_ranking_setting_text',
+  'master_season_pass_shop_text',
+  'master_season_pass_text',
+  'master_season_text',
+  'master_serial_code_campaign_text',
+  'master_shop_realmoney_item_text',
+  'master_shop_text',
+  'master_skill_data_text',
+  'master_stamp_categories_text',
+  'master_theater_demo_text',
+  'master_token_text',
+  'master_warehouse_ability_recipes_text',
+  'master_warehouse_production_abilities_text',
+  'master_warehouse_token_abilities_text',
+  'perk_text',
+  'quest_class_text',
+  'quest_main_chapter01_text',
+  'quest_main_chapter02_text',
+  'quest_main_chapter03_text',
+  'quest_monthly_text',
+  'quest_sub_chapter01_text',
+  'quest_sub_chapter02_text',
+  'quest_sub_chapter03_text',
+  'quest_test_text',
+  'rarity_text',
+  'weapon_perk_text',
+  'weapon_text',
+] as const

@@ -1,9 +1,11 @@
-import { createContext, useContext, useEffect, useRef } from 'react'
+import { deepCopy } from '@/utils/deepCopy'
+import { mergeDeep } from '@/utils/mergeDeep'
+import { useConst } from '@chakra-ui/react'
+import { createContext, useContext, useEffect } from 'react'
 import { proxy, subscribe } from 'valtio'
 import { devtools, useProxy } from 'valtio/utils'
 
 const initStore = {
-  current: Date.now(),
   clock: {
     enabled: false,
     beforeMin: 3,
@@ -13,10 +15,10 @@ const initStore = {
 }
 
 function createStore() {
-  const state = Object.assign({}, initStore)
+  const state = deepCopy(initStore)
   try {
     const storageState = JSON.parse(localStorage.getItem('store') || '{}')
-    Object.assign(state, storageState)
+    mergeDeep(state, storageState)
   } catch (error) {
     console.error('store storage parse error', error)
   }
@@ -31,7 +33,9 @@ const StoreContext = createContext<IStore>(initStore)
 export const StoreProvider: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
-  const store = useRef(createStore()).current
+  const store = useConst(() => {
+    return createStore()
+  })
 
   //middleware
   useStorage(store)
@@ -42,11 +46,8 @@ export const StoreProvider: React.FC<{
 //storage middleware
 function useStorage(store: typeof initStore) {
   useEffect(() => {
-    const h = subscribe(store.clock, () => {
-      const storage = {
-        clock: store.clock,
-      }
-      localStorage.setItem('store', JSON.stringify(storage))
+    const h = subscribe(store, () => {
+      localStorage.setItem('store', JSON.stringify(store))
     })
     return () => h()
   }, [store])
