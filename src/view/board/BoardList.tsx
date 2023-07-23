@@ -7,16 +7,14 @@ import {
   Flex,
   Text,
   Image,
-  Tag,
-  HStack,
-  TagLabel,
-  TagCloseButton,
   useColorMode,
+  Checkbox,
 } from '@chakra-ui/react'
 import { useNavigate, useMatch } from 'react-router-dom'
 import { useBoardData } from './Board'
 import { useBoardStore } from '@/store/boardStore'
-import { QuestConditionTag, QuestMapTag } from './ConditionTag'
+import { useStore } from '@/store/rootStore'
+import TagSelect from './TagSelect'
 
 const BoardList: React.FC = () => {
   const data = useBoardData()
@@ -48,9 +46,10 @@ const BoardList: React.FC = () => {
       </Text>
       <Divider mt={4} mb={4} />
       <TagSelect />
+      <HideCompletedCheck />
       <Divider mt={4} mb={4} />
 
-      <Box flex={1} overflow="auto">
+      <Box flex={1} pr={4} overflow="auto">
         <List spacing={4}>
           {list.map(b => (
             <BoardItem key={b.id} data={b} />
@@ -63,27 +62,15 @@ const BoardList: React.FC = () => {
 
 export default BoardList
 
-const TagSelect: React.FC = () => {
-  const state = useBoardStore()
+const HideCompletedCheck: React.FC = () => {
+  const state = useStore()
+  const onClick = () => (state.board.hideCompleted = !state.board.hideCompleted)
 
-  const cItems = state.conditionTypes.map(id => (
-    <QuestConditionTag key={id} type={id} closeTag />
-  ))
-  const mTags = state.mapIds.map(id => (
-    <QuestMapTag key={id} id={id} closeTag />
-  ))
   return (
-    <HStack
-      h={12}
-      borderColor="gray.400"
-      borderRadius={6}
-      borderWidth={1}
-      padding="0 16px"
-    >
-      <Text mr={4}>筛选条件:</Text>
-      {cItems}
-      {mTags}
-    </HStack>
+    <Flex mt={4}>
+      <Text mr={4}>只显示未完成任务板:</Text>
+      <Checkbox isChecked={state.board.hideCompleted} onChange={onClick} />
+    </Flex>
   )
 }
 
@@ -93,6 +80,7 @@ interface IBoardItemProps {
 
 const BoardItem: React.FC<IBoardItemProps> = ({ data }) => {
   const navi = useNavigate()
+  const configState = useStore()
   const onClick = () => {
     navi(`/board/${data.id}`)
   }
@@ -105,6 +93,15 @@ const BoardItem: React.FC<IBoardItemProps> = ({ data }) => {
   // dont show empty board
   if (data.quest_panel.length === 0) return null
 
+  // quest completed status
+  const questCompletedCount = data.quest_panel.filter(
+    q => configState.board.completed[q] === 1
+  ).length
+  const isCompleted = questCompletedCount === data.quest_panel.length
+  const isIndeterminate = questCompletedCount > 0 && !isCompleted
+
+  //hide completed
+  if (configState.board.hideCompleted && isCompleted) return null
   return (
     <ListItem
       h={24}
@@ -112,13 +109,32 @@ const BoardItem: React.FC<IBoardItemProps> = ({ data }) => {
       borderRadius={6}
       borderColor="gray.400"
       cursor="pointer"
+      pr={4}
       bgColor={isActive ? activeColor : ''}
       fontWeight={isActive ? 'bold' : ''}
       onClick={onClick}
     >
-      <Flex h={24} gap={10} alignItems="center">
+      <Flex h={24} gap={4} alignItems="center">
         <Image w={32} src={getImage(data.icon_id)} draggable={false} />
         <Text>{data.name_text}</Text>
+        <Box
+          // stop click event
+          onClick={e => {
+            console.log('check', e)
+            e.stopPropagation()
+          }}
+        >
+          <Checkbox
+            isChecked={isCompleted}
+            isIndeterminate={isIndeterminate}
+            onChange={() => {
+              configState.board.toggleQuestBatch(
+                data.quest_panel,
+                isCompleted ? 0 : 1
+              )
+            }}
+          />
+        </Box>
       </Flex>
     </ListItem>
   )

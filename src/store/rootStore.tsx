@@ -1,4 +1,3 @@
-import { deepCopy } from '@/utils/deepCopy'
 import { mergeDeep } from '@/utils/mergeDeep'
 import { useConst } from '@chakra-ui/react'
 import { createContext, useContext, useEffect } from 'react'
@@ -12,18 +11,38 @@ const initStore = {
     dayTime: false,
     raid: false,
   },
+  board: {
+    hideCompleted: false,
+    // 0: 未完成 1: 已完成
+    completed: {} as Record<number, 0 | 1>,
+    toggleQuest(id: number, force?: 0 | 1) {
+      if (force !== undefined) {
+        this.completed[id] = force
+        return
+      }
+      if (this.completed[id] === 1) {
+        this.completed[id] = 0
+      } else {
+        this.completed[id] = 1
+      }
+    },
+    toggleQuestBatch(ids: number[], force: 0 | 1) {
+      for (const id of ids) {
+        this.toggleQuest(id, force)
+      }
+    },
+  },
 }
 
 function createStore() {
-  const state = deepCopy(initStore)
+  let state = initStore
   try {
     const storageState = JSON.parse(localStorage.getItem('store') || '{}')
-    mergeDeep(state, storageState)
+    state = mergeDeep({}, initStore, storageState)
   } catch (error) {
     console.error('store storage parse error', error)
   }
   const store = proxy(state)
-
   return store
 }
 
