@@ -1,20 +1,9 @@
-import {
-  Box,
-  Card,
-  CardBody,
-  CardHeader,
-  Divider,
-  Flex,
-  HStack,
-  List,
-  ListItem,
-  Tag,
-  Text,
-} from '@chakra-ui/react'
+import { Box, Checkbox, Divider, Flex, HStack, Text } from '@chakra-ui/react'
 import { useBoardData } from './Board'
 import { useMatch } from 'react-router-dom'
 import { IBoardQuestRich } from '@/loader/boardLoader'
 import { QuestConditionTag, QuestMapTag } from './ConditionTag'
+import { useStore } from '@/store/rootStore'
 
 const QuestList: React.FC = () => {
   const data = useBoardData()
@@ -53,12 +42,23 @@ const QuestItem: React.FC<IQuestItemProps> = ({ data }) => {
     data.quest_achievement_condition.condition_type
   )
   const mapId = data.quest_achievement_condition.map_id
+
+  //check box
+  const state = useStore()
+  const isChecked = state.board.completed[data.id] === 1
   return (
-    <Box>
+    <Box opacity={isChecked ? 0.5 : 1}>
       <Flex direction="column">
-        <Text fontWeight="bold" display="block">
-          {data.quest_text}
-        </Text>
+        <Flex>
+          <Text fontWeight="bold" display="block">
+            {data.quest_text}
+          </Text>
+          <Checkbox
+            isChecked={isChecked}
+            onChange={() => state.board.toggleQuest(data.id)}
+            ml={2}
+          />
+        </Flex>
         <Box>
           <Text>ID: {data.id}</Text>
           <HStack>
