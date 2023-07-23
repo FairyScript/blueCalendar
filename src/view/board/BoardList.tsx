@@ -116,8 +116,10 @@ const BoardItem: React.FC<IBoardItemProps> = ({ data }) => {
     >
       <Flex h={24} gap={4} alignItems="center">
         <Image w={32} src={getImage(data.icon_id)} draggable={false} />
-        <Text>{data.name_text}</Text>
-        <Box
+        <Box maxW={60} overflow="hidden" textOverflow="ellipsis">
+          <Text whiteSpace="nowrap">{data.name_text}</Text>
+        </Box>
+        <Flex
           // stop click event
           onClick={e => {
             console.log('check', e)
@@ -134,7 +136,10 @@ const BoardItem: React.FC<IBoardItemProps> = ({ data }) => {
               )
             }}
           />
-        </Box>
+          <Text ml={2}>
+            {questCompletedCount}/{data.quest_panel.length}
+          </Text>
+        </Flex>
       </Flex>
     </ListItem>
   )

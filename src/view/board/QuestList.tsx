@@ -49,15 +49,16 @@ const QuestItem: React.FC<IQuestItemProps> = ({ data }) => {
   return (
     <Box opacity={isChecked ? 0.5 : 1}>
       <Flex direction="column">
-        <Flex>
-          <Text fontWeight="bold" display="block">
-            {data.quest_text}
-          </Text>
+        <Flex alignItems='flex-start'>
           <Checkbox
             isChecked={isChecked}
             onChange={() => state.board.toggleQuest(data.id)}
-            ml={2}
+            mr={2}
+            mt={1}
           />
+          <Text fontWeight="bold" display="block">
+            {data.quest_text}
+          </Text>
         </Flex>
         <Box>
           <Text>ID: {data.id}</Text>
