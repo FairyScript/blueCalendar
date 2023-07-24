@@ -1,7 +1,21 @@
-import { Tag, TagCloseButton, TagLabel } from '@chakra-ui/react'
+import {
+  Link,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+} from '@chakra-ui/react'
 import type { TagProps } from '@chakra-ui/react'
 import { useBoardData } from './Board'
 import { useBoardStore } from '@/store/boardStore'
+import { useState } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 
 const QUEST_CONDITION_TYPE: Record<number, string> = {
   5: '入手',
@@ -70,16 +84,37 @@ export const QuestMapTag: React.FC<IQuestMapProps> = ({
     const action = closeTag ? 'remove' : 'add'
     state.setTag('mapIds', id, action)
   }
+  const [menu, setMenu] = useState(false)
   return (
-    <Tag
-      colorScheme="linkedin"
-      cursor="pointer"
-      borderRadius="full"
-      onClick={closeTag ? undefined : onClick}
-      {...props}
-    >
-      <TagLabel> {boardData.locationName[id]}</TagLabel>
-      {closeTag && <TagCloseButton onClick={onClick} />}
-    </Tag>
+    <Popover isLazy isOpen={menu} onClose={() => setMenu(false)}>
+      <PopoverTrigger>
+        <Tag
+          colorScheme="linkedin"
+          cursor="pointer"
+          borderRadius="full"
+          onClick={closeTag ? undefined : onClick}
+          onContextMenu={e => {
+            e.preventDefault()
+            setMenu(true)
+          }}
+          {...props}
+        >
+          <TagLabel> {boardData.locationName[id]}</TagLabel>
+          {closeTag && <TagCloseButton onClick={onClick} />}
+        </Tag>
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverArrow />
+        <PopoverBody>
+          <Link
+            as={RouterLink}
+            to={`https://bp-map.bluefissure.com/${id.split('_')[0]}`}
+            target="_blank"
+          >
+            打开互动地图
+          </Link>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   )
 }
