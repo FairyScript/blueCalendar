@@ -1,3 +1,4 @@
+import { isDev } from '@/utils/isDev'
 import { mergeDeep } from '@/utils/mergeDeep'
 import { useConst } from '@chakra-ui/react'
 import { createContext, useContext, useEffect } from 'react'
@@ -72,7 +73,7 @@ function useStorage(store: typeof initStore) {
   }, [store])
 
   useEffect(() => {
-    if (import.meta.env.DEV) {
+    if (isDev) {
       devtools(store, {
         name: 'store',
         enabled: true,

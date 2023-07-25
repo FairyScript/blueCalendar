@@ -5,27 +5,27 @@ import { deepCopy } from '@/utils/deepCopy'
 import { Outlet } from 'react-router-dom'
 
 const App: React.FC = () => {
-  useWorker()
+  // useWorker()
   return <Outlet />
 }
 
 export default App
 
-function useWorker() {
-  const store = useStoreRef()
-  useEffect(() => {
-    const w = new Worker(new URL('../worker/worker.ts', import.meta.url), {
-      type: 'module',
-    })
-    const h = subscribe(store.clock, () => {
-      w.postMessage(deepCopy(store.clock))
-    })
+// function useWorker() {
+//   const store = useStoreRef()
+//   useEffect(() => {
+//     const w = new Worker(new URL('../worker/worker.ts', import.meta.url), {
+//       type: 'module',
+//     })
+//     const h = subscribe(store.clock, () => {
+//       w.postMessage(deepCopy(store.clock))
+//     })
 
-    w.postMessage(deepCopy(store.clock))
+//     w.postMessage(deepCopy(store.clock))
 
-    return () => {
-      w.terminate()
-      h()
-    }
-  }, [])
-}
+//     return () => {
+//       w.terminate()
+//       h()
+//     }
+//   }, [])
+// }

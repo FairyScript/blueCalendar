@@ -1,3 +1,4 @@
+import { isDev } from '@/utils/isDev'
 import { useConst } from '@chakra-ui/react'
 import { createContext, useContext, useEffect } from 'react'
 import { proxy } from 'valtio'
@@ -46,7 +47,7 @@ export const BoardStoreProvider: React.FC<{
   })
 
   useEffect(() => {
-    if (import.meta.env.DEV) {
+    if (isDev) {
       devtools(store, {
         name: 'boardStore',
         enabled: true,
