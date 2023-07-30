@@ -165,6 +165,7 @@ const BoardItem: React.FC<IBoardItemProps> = ({ data }) => {
   ).length
   const isCompleted = questCompletedCount === data.quest_panel.length
   const isIndeterminate = questCompletedCount > 0 && !isCompleted
+  if (configState.board.hideCompleted && isCompleted) return null
 
   return (
     <ListItem
