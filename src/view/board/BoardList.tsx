@@ -17,28 +17,7 @@ import { useStore } from '@/store/rootStore'
 import TagSelect from './TagSelect'
 
 const BoardList: React.FC = () => {
-  const data = useBoardData()
-  const state = useBoardStore()
-  const conditionTypes = state.conditionTypes
-  const mapIds = state.mapIds
-  const filterCondition = conditionTypes.length > 0
-  const filterMap = mapIds.length > 0
-  let list = Object.values(data.boardData)
-  if (filterCondition || filterMap) {
-    list = list.filter(b => {
-      const isInCondition =
-        !filterCondition ||
-        conditionTypes.some(
-          id => b.condition_list && b.condition_list.includes(id)
-        )
-
-      const isInMap =
-        !filterMap ||
-        mapIds.some(id => b.map_id_list && b.map_id_list.includes(id))
-
-      return isInCondition && isInMap
-    })
-  }
+  const list = useBoardQuery()
   return (
     <Flex minW={400} h="100%" direction="column">
       <Text fontSize="2xl" fontWeight="bold">
@@ -62,14 +41,101 @@ const BoardList: React.FC = () => {
 
 export default BoardList
 
+function useBoardQuery() {
+  const boardStore = useBoardStore()
+  const boardData = useBoardData()
+  const config = useStore().board
+  const conditionTypes = boardStore.conditionTypes
+  const mapIds = boardStore.mapIds
+  const filterCondition = conditionTypes.length > 0
+  const filterMap = mapIds.length > 0
+  let boardList = Object.values(boardData.boardData)
+
+  const needFilter = filterCondition || filterMap
+  if (!needFilter) return boardList
+
+  boardList = boardList.filter(board => {
+    let flag = false
+
+    for (const questId of board.quest_panel) {
+      const quest = boardData.boardQuest[questId]
+      if (!quest) continue
+
+      // pass completed quest
+      if (config.queryUncompleted) {
+        if (config.completed[questId] === 1) continue
+      }
+
+      // filter condition
+      if (filterCondition) {
+        const conditionType = parseInt(
+          quest.quest_achievement_condition.condition_type
+        )
+        const isInCondition = conditionTypes.includes(conditionType)
+        if (!isInCondition) continue
+      }
+
+      // filter map
+      if (filterMap) {
+        const mapId = quest.quest_achievement_condition.map_id
+        const isInMap = mapId && mapIds.includes(mapId)
+        if (!isInMap) continue
+      }
+
+      flag = true
+    }
+
+    return flag
+  })
+
+  // if (filterCondition || filterMap) {
+  //   boardList = boardList.filter(b => {
+  //     // filter condition
+  //     if (filterCondition) {
+  //       const isInCondition = conditionTypes.some(
+  //         id => b.condition_list && b.condition_list.includes(id)
+  //       )
+  //       if (!isInCondition) return false
+  //     }
+
+  //     // filter map
+  //     if (filterMap) {
+  //       const isInMap = mapIds.some(
+  //         id => b.map_id_list && b.map_id_list.includes(id)
+  //       )
+  //       if (!isInMap) return false
+  //     }
+
+  //     return true
+  //   })
+  // }
+
+  return boardList
+}
+
 const HideCompletedCheck: React.FC = () => {
   const state = useStore()
-  const onClick = () => (state.board.hideCompleted = !state.board.hideCompleted)
+  const toggleHideCompleted = () =>
+    (state.board.hideCompleted = !state.board.hideCompleted)
+  const toggleQueryFilter = () =>
+    (state.board.queryUncompleted = !state.board.queryUncompleted)
 
   return (
-    <Flex mt={4}>
-      <Text mr={4}>只显示未完成任务板:</Text>
-      <Checkbox isChecked={state.board.hideCompleted} onChange={onClick} />
+    <Flex mt={4} gap={4}>
+      <Flex gap={4}>
+        <Text>只显示未完成任务板:</Text>
+        <Checkbox
+          isChecked={state.board.hideCompleted}
+          onChange={toggleHideCompleted}
+        />
+      </Flex>
+      <Flex gap={4}>
+        <Text>只搜索未完成任务版:</Text>
+        <Checkbox
+          isChecked={state.board.queryUncompleted}
+          onChange={toggleQueryFilter}
+        />
+      </Flex>
     </Flex>
   )
 }
@@ -100,8 +166,6 @@ const BoardItem: React.FC<IBoardItemProps> = ({ data }) => {
   const isCompleted = questCompletedCount === data.quest_panel.length
   const isIndeterminate = questCompletedCount > 0 && !isCompleted
 
-  //hide completed
-  if (configState.board.hideCompleted && isCompleted) return null
   return (
     <ListItem
       h={24}
