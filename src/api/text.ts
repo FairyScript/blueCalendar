@@ -3,7 +3,7 @@ import axios from 'axios'
 
 //testData
 function getText(lang: string) {
-  return `https://cdn.jsdelivr.net/gh/FairyScript/bp-datamine/apiext/texts/${lang}.json` //new URL(`../testData/texts/${lang}.json`, import.meta.url).href
+  return `https://cdn.jsdelivr.net/gh/FairyScript/bp-datamine/apiext/texts/${lang}.json`
 }
 
 const jpText = getText('ja_JP')
