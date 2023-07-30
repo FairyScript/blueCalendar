@@ -13,6 +13,7 @@ const initStore = {
   },
   board: {
     hideCompleted: false,
+    queryUncompleted: false,
     // 0: 未完成 1: 已完成
     completed: {} as Record<number, 0 | 1>,
     toggleQuest(id: number, force?: 0 | 1) {

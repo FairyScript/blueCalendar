@@ -53,17 +53,17 @@ export async function boardDataLoader() {
     d.board_id = boardPanel[data.id].board_id
 
     //add condition_list & map_id to boardData
-    if (!boardData[d.board_id].condition_list)
-      boardData[d.board_id].condition_list = []
-    if (!boardData[d.board_id].map_id_list)
-      boardData[d.board_id].map_id_list = []
+    // if (!boardData[d.board_id].condition_list)
+    //   boardData[d.board_id].condition_list = []
+    // if (!boardData[d.board_id].map_id_list)
+    //   boardData[d.board_id].map_id_list = []
 
-    const condition_type = parseInt(
-      d.quest_achievement_condition.condition_type
-    )
-    const map_id = d.quest_achievement_condition.map_id
-    boardData[d.board_id].condition_list.push(condition_type)
-    if (map_id) boardData[d.board_id].map_id_list.push(map_id)
+    // const condition_type = parseInt(
+    //   d.quest_achievement_condition.condition_type
+    // )
+    // const map_id = d.quest_achievement_condition.map_id
+    // boardData[d.board_id].condition_list.push(condition_type)
+    // if (map_id) boardData[d.board_id].map_id_list.push(map_id)
   }
 
   // location_id: location_name
@@ -93,8 +93,8 @@ function getData<T extends {}>(loader: Promise<{ data: T }>) {
 export interface IBoardDataRich extends IBoardData {
   name_text: string
   quest_panel: number[]
-  condition_list: number[]
-  map_id_list: string[]
+  // condition_list: number[]
+  // map_id_list: string[]
 }
 
 export interface IBoardQuestRich extends IBoardQuest {
