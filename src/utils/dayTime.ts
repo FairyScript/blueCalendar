@@ -22,9 +22,14 @@ export function getDayTime(now: Dayjs) {
 }
 
 function getDayStart(now: Dayjs) {
-  //无法确认是否维护后会重置,可能有数秒的误差
-  const newDay = now.tz('Asia/Tokyo').startOf('h').hour(5).minute(2).second(10)
-  //TODO 在东京时间5:20-9:45之间,发生了跳变.暂时无法确认具体时间点
-  const isnewDay = now.isAfter(newDay)
-  return isnewDay ? newDay : newDay.subtract(1, 'day')
+  const tokyo = now.tz('Asia/Tokyo')
+  // 东京时间 08:57:10 ~ 09:12:10 之间为 15 分钟夜晚
+  const shortNight = tokyo.hour(8).minute(57).second(10)
+  if (tokyo.isAfter(shortNight)) {
+    // 以 09:12:10 为日出，倒推 50 分钟
+    return tokyo.hour(8).minute(22).second(10)
+  } else {
+    // 以 08:32:10 为日出，倒推 50 分钟 * 11 周期，到达前一天的最后一个日出
+    return tokyo.hour(8).minute(32).second(10).subtract(550, 'minute')
+  }
 }
